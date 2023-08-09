@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="table_weather_data" author="corneil">
+        <createTable tableName="weather_data">
+            <column name="weather_time" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="prediction" type="double"/>
+            <column name="rain_measured" type="double"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="table_sprinkler_state" author="corneil">
+        <createTable tableName="sprinkler_state">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="status_time" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="state" type="boolean"/>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="load_weather_data" author="corneil">
+        <loadData tableName="weather_data" file="sample.csv" relativeToChangelogFile="true"/>
+    </changeSet>
+</databaseChangeLog>

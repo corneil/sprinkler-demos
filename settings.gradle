@@ -10,4 +10,6 @@
 rootProject.name = 'sprinkler-demos'
 
 include ':sprinkler-common'
+include ':sprinkler-simulation-client'
 include ':sprinkler-decision'
+include ':sprinkler-simulation-app'

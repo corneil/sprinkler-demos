@@ -1,6 +1,6 @@
 package com.example.sprinkler.decision;
 
-import com.example.sprinkler.common.SprinklerCommonConfig;
+import com.example.sprinkler.common.service.SprinklerServiceConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
-@Import(SprinklerCommonConfig.class)
+@Import(SprinklerServiceConfig.class)
 @EnableTransactionManagement
 public class SprinklerDecisionApplication {
 

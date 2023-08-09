@@ -1,13 +1,13 @@
 plugins {
     id 'java-library'
-    id 'io.spring.dependency-management' version '1.1.2'
 }
-
-group = 'com.example.sprinkler'
-version = '1.0.0-SNAPSHOT'
+apply from: "$rootProject.projectDir/dependencies.gradle"
 
 java {
-    sourceCompatibility = '17'
+    toolchain {
+        version = JavaLanguageVersion.of(17)
+    }
+    sourceCompatibility = JavaVersion.VERSION_17
 }
 
 configurations {
@@ -15,20 +15,17 @@ configurations {
         extendsFrom annotationProcessor
     }
 }
-dependencyManagement {
-    imports {
-        mavenBom 'org.springframework.boot:spring-boot-dependencies:3.1.2'
-    }
-}
-repositories {
-    mavenCentral()
-}
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    runtimeOnly 'com.h2database:h2'
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    implementation 'org.liquibase:liquibase-core'
+
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    testImplementation 'org.springframework.boot:spring-boot-starter'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.assertj:assertj-core'
+    testRuntimeOnly 'com.h2database:h2'
 }
 
 tasks.named('test') {
