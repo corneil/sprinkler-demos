@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.util.Assert;
@@ -62,6 +63,7 @@ public class SimulationTimerConfiguration {
 	}
 
 	@Bean(name = "timer")
+	@Primary
 	public Supplier<Flux<Message<SprinklerEvent>>> timeSupplierFlux(
 		TimerSimulationProperties properties,
 		@Autowired(required = false) SimulationService simulationService

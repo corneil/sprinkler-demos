@@ -7,12 +7,14 @@ import com.example.sprinkler.common.SprinklerEvent;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.integration.config.EnableIntegration;
 
 @Configuration
 @EnableIntegration
 public class SprinklerDataConsumerConfig {
     @Bean(name = "data")
+    @Primary
     public Consumer<SprinklerEvent> sprinklerDataConsumer(SimulationService service) {
 
         return service::updateSprinkler;
