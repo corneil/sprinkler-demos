@@ -12,7 +12,7 @@ import org.springframework.integration.config.EnableIntegration;
 @Configuration
 @EnableIntegration
 public class SprinklerDataConsumerConfig {
-    @Bean
+    @Bean(name = "data")
     public Consumer<SprinklerEvent> sprinklerDataConsumer(SimulationService service) {
 
         return service::updateSprinkler;
