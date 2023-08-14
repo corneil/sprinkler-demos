@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.lang.NonNull;
-import org.springframework.lang.NonNullApi;
 
 public interface SimulationService {
     Optional<SprinklerStatus> findLatestStatus(@NonNull ZonedDateTime timestamp);

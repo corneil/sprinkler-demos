@@ -14,6 +14,7 @@ import com.example.sprinkler.common.SprinklerStatus;
 import com.example.sprinkler.common.WeatherData;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -29,7 +30,7 @@ public class SimulationClient implements SimulationService {
     }
 
     @Override
-    public Optional<SprinklerStatus> findLatestStatus(ZonedDateTime timestamp) {
+    public Optional<SprinklerStatus> findLatestStatus(@NonNull ZonedDateTime timestamp) {
         URI uri = UriComponentsBuilder.fromHttpUrl(serverApiUrl)
             .pathSegment("latest")
             .queryParam("timestamp", timestamp)
@@ -72,7 +73,7 @@ public class SimulationClient implements SimulationService {
     }
 
     @Override
-    public Optional<WeatherData> latestWeather(ZonedDateTime timestamp) {
+    public Optional<WeatherData> latestWeather(@NonNull ZonedDateTime timestamp) {
         URI uri = UriComponentsBuilder.fromHttpUrl(serverApiUrl)
             .pathSegment("latest")
             .queryParam("timestamp", timestamp)

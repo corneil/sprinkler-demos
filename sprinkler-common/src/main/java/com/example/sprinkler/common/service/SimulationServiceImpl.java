@@ -17,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.lang.NonNull;
-import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 public class SimulationServiceImpl implements SimulationService {
@@ -33,7 +32,7 @@ public class SimulationServiceImpl implements SimulationService {
     }
 
     @Override
-    public Optional<SprinklerStatus> findLatestStatus(ZonedDateTime timestamp) {
+    public Optional<SprinklerStatus> findLatestStatus(@NonNull ZonedDateTime timestamp) {
         Assert.notNull(timestamp, "timestamp required");
         Optional<SprinklerStatus> sprinklerStatus = statusRepository.findLatestFor(Timestamp.from(timestamp.toInstant()))
             .map(SprinklerStatusEntity::toInfo);

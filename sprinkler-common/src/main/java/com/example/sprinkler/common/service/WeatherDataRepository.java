@@ -8,7 +8,6 @@ import java.util.Optional;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.util.Pair;
 
 public interface WeatherDataRepository extends Repository<WeatherDataEntity, ZonedDateTime> {
     @Query("select * from WEATHER_DATA where WEATHER_TIME between :start and :end")

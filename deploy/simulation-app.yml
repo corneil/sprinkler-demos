@@ -62,7 +62,7 @@ spec:
             timeoutSeconds: 3
           resources:
             requests:
-              cpu: 1.0
+              cpu: '1.0'
               memory: 2048Mi
           env:
             - name: LANG

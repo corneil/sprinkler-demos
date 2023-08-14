@@ -1,13 +1,9 @@
 package com.example.sprinkler.common;
 
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.time.temporal.TemporalUnit;
 import java.util.Optional;
-
-import javax.sql.DataSource;
 
 import com.example.sprinkler.common.service.SprinklerServiceConfig;
 import org.assertj.core.data.Offset;
@@ -17,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;

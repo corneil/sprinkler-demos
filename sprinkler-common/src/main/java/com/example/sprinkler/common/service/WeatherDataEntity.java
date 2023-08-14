@@ -1,9 +1,7 @@
 package com.example.sprinkler.common.service;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Objects;
 
 import com.example.sprinkler.common.WeatherData;

@@ -7,12 +7,13 @@ import com.example.sprinkler.decision.TimerRule;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.function.context.FunctionProperties;
 import org.springframework.context.annotation.Import;
 import org.springframework.integration.config.EnableIntegration;
 
 @SpringBootApplication
 @EnableIntegration
-@EnableConfigurationProperties(SprinklerDecisionProperties.class)
+@EnableConfigurationProperties({SprinklerDecisionProperties.class, FunctionProperties.class})
 @Import({SprinklerClientConfig.class, TimerRule.class})
 public class SprinklerDecisionProcessorApplication {
     public static void main(String[] args) {

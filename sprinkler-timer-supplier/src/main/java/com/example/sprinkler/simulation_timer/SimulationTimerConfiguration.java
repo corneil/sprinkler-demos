@@ -27,7 +27,7 @@ import org.springframework.util.Assert;
 public class SimulationTimerConfiguration {
 	private final static Logger logger = LoggerFactory.getLogger(SimulationTimerConfiguration.class);
 
-	UUID uuid = UUID.randomUUID();
+	final UUID uuid = UUID.randomUUID();
 
 	ZonedDateTime next = null;
 

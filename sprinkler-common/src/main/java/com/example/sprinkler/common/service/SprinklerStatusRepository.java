@@ -1,8 +1,6 @@
 package com.example.sprinkler.common.service;
 
 import java.sql.Timestamp;
-import java.time.ZonedDateTime;
-import java.time.ZonedDateTime;
 import java.util.Optional;
 
 import org.springframework.data.jdbc.repository.query.Query;
