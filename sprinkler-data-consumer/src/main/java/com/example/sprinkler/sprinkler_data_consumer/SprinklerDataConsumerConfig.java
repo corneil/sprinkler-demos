@@ -15,7 +15,7 @@ import org.springframework.integration.config.EnableIntegration;
 public class SprinklerDataConsumerConfig {
     @Bean(name = "data")
     @Primary
-    public Consumer<SprinklerEvent> sprinklerDataConsumer(SimulationService service) {
+    public Consumer<SprinklerEvent> data(SimulationService service) {
 
         return service::updateSprinkler;
     }

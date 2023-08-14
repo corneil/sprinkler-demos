@@ -38,7 +38,7 @@ public class SimulationTimerConfiguration {
 
 	long eventRate = 0;
 
-	public void configure(
+	private void configure(
 		TimerSimulationProperties properties,
 		@Autowired(required = false) SimulationService simulationService
 	) {
@@ -64,7 +64,7 @@ public class SimulationTimerConfiguration {
 
 	@Bean(name = "timer")
 	@Primary
-	public Supplier<Flux<Message<SprinklerEvent>>> timeSupplierFlux(
+	public Supplier<Flux<Message<SprinklerEvent>>> timer(
 		TimerSimulationProperties properties,
 		@Autowired(required = false) SimulationService simulationService
 	) {
