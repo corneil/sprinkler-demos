@@ -95,5 +95,6 @@
         <module>sprinkler-timer-source</module>
         <module>sprinkler-data-consumer</module>
         <module>sprinkler-data-sink</module>
+        <module>sprinkler-report</module>
     </modules>
 </project>
