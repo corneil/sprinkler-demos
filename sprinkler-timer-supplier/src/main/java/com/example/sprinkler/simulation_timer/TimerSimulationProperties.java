@@ -14,12 +14,13 @@ public class TimerSimulationProperties {
 	private ZonedDateTime startTime;
 
 	/**
-	 * The amount of time the generated date range should cover (ie. 'startTime + runTime' is last event).
+	 * The amount of time the generated date range should cover (ie. 'startTime + runTime' is the last event).
 	 */
 	private Duration runTime;
 
 	/**
-	 * The amount of time between events.
+	 * The amount of time between events (ie. ‘startTime + runTime / cycleDuration' is the amount of events
+	 * to generate during the simulation).
 	 */
 	private Duration cycleDuration;
 
