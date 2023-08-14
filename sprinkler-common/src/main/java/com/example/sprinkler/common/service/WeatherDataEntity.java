@@ -11,14 +11,14 @@ import com.example.sprinkler.common.WeatherData;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Table(name = "weather_data")
+@Table(name = "WEATHER_DATA")
 public class WeatherDataEntity {
-    @Column("weather_time")
+    @Column("WEATHER_TIME")
     private Timestamp timestamp;
-
+    @Column("PREDICTION")
     private Double prediction;
 
-    @Column("rain_measured")
+    @Column("RAIN_MEASURED")
     private Double rainMeasured;
 
     public WeatherDataEntity() {

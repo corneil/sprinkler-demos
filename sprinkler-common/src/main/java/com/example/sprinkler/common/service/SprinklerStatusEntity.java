@@ -11,21 +11,22 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Table(name = "sprinkler_state")
+@Table(name = "SPRINKLER_STATE")
 public class SprinklerStatusEntity {
     @Id
+    @Column("ID")
     private Long id;
 
-    @Column("status_time")
+    @Column("STATUS_TIME")
     private Timestamp statusTime;
 
+    @Column("STATE")
     private SprinklerState state;
 
     public SprinklerStatusEntity() {
     }
 
-    public SprinklerStatusEntity(Long id, Timestamp statusTime, SprinklerState state) {
-        this.id = id;
+    public SprinklerStatusEntity(Timestamp statusTime, SprinklerState state) {
         this.statusTime = statusTime;
         this.state = state;
     }

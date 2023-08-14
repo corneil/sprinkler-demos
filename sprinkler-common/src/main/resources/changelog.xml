@@ -5,29 +5,43 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
 
-    <changeSet id="table_weather_data" author="corneil">
-        <createTable tableName="weather_data">
-            <column name="weather_time" type="timestamp">
+    <changeSet id="create_weather_data" author="corneil">
+        <createTable tableName="WEATHER_DATA">
+            <column name="WEATHER_TIME" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="prediction" type="double"/>
-            <column name="rain_measured" type="double"/>
+            <column name="PREDICTION" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RAIN_MEASURED" type="double">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
-    <changeSet id="table_sprinkler_state" author="corneil">
-        <createTable tableName="sprinkler_state">
-            <column name="id" type="bigint" autoIncrement="true">
+    <changeSet id="create_sprinkler_state" author="corneil">
+        <createTable tableName="SPRINKLER_STATE">
+            <column name="ID" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="status_time" type="timestamp">
+            <column name="STATUS_TIME" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="state" type="boolean"/>
+            <column name="STATE" type="varchar(4)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
+        <createSequence sequenceName="SPRINKLER_STATE_SEQ" startValue="1" minValue="1"/>
     </changeSet>
 
 
     <changeSet id="load_weather_data" author="corneil">
-        <loadData tableName="weather_data" file="sample.csv" relativeToChangelogFile="true"/>
+        <loadData tableName="WEATHER_DATA" file="weather_data.csv" relativeToChangelogFile="true"/>
+        <loadData tableName="SPRINKLER_STATE" file="sprinkler_state.csv" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="set_sprinkler_state_seq_start" author="corneil">
+        <!-- Update this when sprinkler-state.csv import more records -->
+        <sql>
+            alter sequence SPRINKLER_STATE_SEQ restart with 2
+        </sql>
     </changeSet>
 </databaseChangeLog>

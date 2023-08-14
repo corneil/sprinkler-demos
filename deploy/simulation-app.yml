@@ -1,0 +1,132 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sprinkler-app
+  labels:
+    app: sprinkler-app
+data:
+  application.yaml: |-
+    logging:
+      level:
+        root: info
+        org.springframework: debug
+        com.example.sprinkler: debug
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sprinkler-app
+  labels:
+    app: sprinkler-app
+spec:
+  selector:
+    matchLabels:
+      app: sprinkler-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sprinkler-app
+    spec:
+      containers:
+        - name: sprinkler-app
+          image: sprinkler-demos/sprinkler-simulation-app:1.0.0-SNAPSHOT
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: config
+              mountPath: /workspace/config
+              readOnly: true
+            - name: database
+              mountPath: /etc/secrets/database
+              readOnly: true
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 0
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 0
+          startupProbe:
+            httpGet:
+              path: /actuator
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 3
+            failureThreshold: 120
+            timeoutSeconds: 3
+          resources:
+            requests:
+              cpu: 1.0
+              memory: 2048Mi
+          env:
+            - name: LANG
+              value: 'en_US.utf8'
+            - name: LC_ALL
+              value: 'en_US.utf8'
+            - name: JDK_JAVA_OPTIONS
+              value: '-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8'
+            - name: KUBERNETES_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: "metadata.namespace"
+            - name: SERVER_PORT
+              value: '8080'
+            - name: SPRING_CLOUD_KUBERNETES_CONFIG_ENABLE_API
+              value: 'false'
+            - name: SPRING_CLOUD_KUBERNETES_SECRETS_ENABLE_API
+              value: 'false'
+            - name: SPRING_CLOUD_KUBERNETES_SECRETS_PATHS
+              value: /etc/secrets
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: SPRING_DATASOURCE_USERNAME
+                  name: scdf-datasource
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: SPRING_DATASOURCE_PASSWORD
+                  name: scdf-datasource
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: SPRING_DATASOURCE_URL
+                  name: scdf-datasource
+            - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
+              valueFrom:
+                configMapKeyRef:
+                  key: SPRING_DATASOURCE_DRIVER_CLASS_NAME
+                  name: scdf-datasource
+      serviceAccountName: scdf-sa
+      volumes:
+        - name: config
+          configMap:
+            name: sprinkler-app
+            items:
+              - key: application.yaml
+                path: application.yaml
+        - name: database
+          secret:
+            secretName: mariadb
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: sprinkler-app
+  labels:
+    app: sprinkler-app
+    spring-deployment-id: sprinkler
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 8080
+      targetPort: 8080
+      name: sprinkler-app
+  selector:
+    app: sprinkler-app

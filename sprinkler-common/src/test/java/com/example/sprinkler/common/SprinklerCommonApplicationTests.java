@@ -1,6 +1,10 @@
 package com.example.sprinkler.common;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.time.temporal.TemporalUnit;
 import java.util.Optional;
 
 import javax.sql.DataSource;
@@ -35,21 +39,49 @@ class SprinklerCommonApplicationTests {
     @Test
     void testRange() {
         DateRange range = simulationService.findDateRange();
-        assertThat(range.start()).isBeforeOrEqualTo(ZonedDateTime.parse("2023-08-01T23:59:59+02:00"));
-        assertThat(range.end()).isAfterOrEqualTo(ZonedDateTime.parse("2023-08-14T23:59:59+02:00"));
+        assertThat(range.getStart().toInstant()).isBeforeOrEqualTo(Timestamp.valueOf("2023-08-01 23:59:59").toInstant());
+        assertThat(range.getEnd().toInstant()).isAfterOrEqualTo(Timestamp.valueOf("2023-08-14 23:59:59").toInstant());
     }
 
     @Test
     void testLatestData() {
-        ZonedDateTime now = ZonedDateTime.parse("2023-08-04T13:00:00+02:00");
+        ZonedDateTime now = Timestamp.valueOf("2023-08-04 13:00:00").toInstant().atZone(ZoneOffset.UTC);
         Optional<WeatherData> latest = simulationService.latestWeather(now);
         assertThat(latest).isPresent();
-        assertThat(latest.get().timestamp()).isBeforeOrEqualTo(now);
-        assertThat(latest.get().timestamp()).isAfterOrEqualTo(ZonedDateTime.parse("2023-08-03T23:59:59+02:00"));
-        assertThat(latest.get().prediction()).isCloseTo(0.15, Offset.offset(0.0001));
-        assertThat(latest.get().rainMeasured()).isCloseTo(0.3, Offset.offset(0.0001));
+        assertThat(latest.get().getTimestamp()).isBeforeOrEqualTo(now);
+        assertThat(latest.get().getTimestamp()).isAfterOrEqualTo(Timestamp.valueOf("2023-08-03 23:59:59").toInstant().atZone(ZoneOffset.UTC));
+        assertThat(latest.get().getPrediction()).isCloseTo(0.15, Offset.offset(0.0001));
+        assertThat(latest.get().getRainMeasured()).isCloseTo(0.3, Offset.offset(0.0001));
     }
 
+    @Test
+    void testRainData() {
+        ZonedDateTime now = Timestamp.valueOf("2023-08-04 13:00:00").toInstant().atZone(ZoneOffset.UTC);
+        Double rainMeasure = simulationService.rainMeasuredFor(new DateRange(now.minusDays(2), now));
+        assertThat(rainMeasure).isNotNull();
+        assertThat(rainMeasure).isCloseTo(3.0, Offset.offset(0.01));
+    }
+
+    @Test
+    void testState() {
+        ZonedDateTime now = Timestamp.valueOf("2023-08-04 13:00:00").toInstant().atZone(ZoneOffset.UTC);
+        Optional<SprinklerStatus> state = simulationService.findLatestStatus(now);
+        assertThat(state).isPresent();
+        assertThat(state.get().getState()).isEqualByComparingTo(SprinklerState.OFF);
+    }
+    @Test
+    void testFirstState() {
+        ZonedDateTime now = Timestamp.valueOf("2023-08-01 23:59:59").toInstant().atZone(ZoneOffset.UTC);
+        Optional<SprinklerStatus> state = simulationService.findLatestStatus(now);
+        assertThat(state).isPresent();
+        assertThat(state.get().getState()).isEqualByComparingTo(SprinklerState.OFF);
+    }
+    @Test
+    void testNoState() {
+        ZonedDateTime now = Timestamp.valueOf("2023-08-01 13:00:00").toInstant().atZone(ZoneOffset.UTC);
+        Optional<SprinklerStatus> state = simulationService.findLatestStatus(now);
+        assertThat(state).isNotPresent();
+    }
     @SpringBootApplication
     @Import(SprinklerServiceConfig.class)
     @EnableTransactionManagement
@@ -57,9 +89,6 @@ class SprinklerCommonApplicationTests {
         public static void main(String[] args) {
             SpringApplication.run(TestApplication.class, args);
         }
-        @Bean
-        public DataSource dataSource() {
-            return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2).build();
-        }
+
     }
 }

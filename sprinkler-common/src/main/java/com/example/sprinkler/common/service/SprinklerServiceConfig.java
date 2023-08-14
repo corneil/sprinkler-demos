@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -30,5 +31,10 @@ public class SprinklerServiceConfig {
     @Bean
     public SimulationService simulationService(SprinklerStatusRepository statusRepository, WeatherDataRepository weatherDataRepository) {
         return new SimulationServiceImpl(statusRepository, weatherDataRepository);
+    }
+
+    @Bean
+    public SprinklerStatusIdGenerator sprinklerStatusIdGenerator(DataSource dataSource) {
+        return new SprinklerStatusIdGenerator(new JdbcTemplate(dataSource));
     }
 }

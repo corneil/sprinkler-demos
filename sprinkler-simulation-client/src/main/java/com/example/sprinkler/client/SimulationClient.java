@@ -14,6 +14,7 @@ import com.example.sprinkler.common.SprinklerStatus;
 import com.example.sprinkler.common.WeatherData;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -63,6 +64,7 @@ public class SimulationClient implements SimulationService {
     @Override
     public List<WeatherData> listAllWeather() {
         URI uri = UriComponentsBuilder.fromHttpUrl(serverApiUrl)
+            .pathSegment("weather")
             .build()
             .toUri();
         WeatherData[] result = template.getForObject(uri, WeatherData[].class);
@@ -86,10 +88,24 @@ public class SimulationClient implements SimulationService {
     public Double rainMeasuredFor(DateRange range) {
         URI uri = UriComponentsBuilder.fromHttpUrl(serverApiUrl)
             .pathSegment("rain")
-            .queryParam("start", range.start())
-            .queryParam("end", range.end())
+            .queryParam("start", range.getStart())
+            .queryParam("end", range.getEnd())
             .build()
             .toUri();
         return template.getForObject(uri, Double.class);
+    }
+
+    @Override
+    public List<SprinklerStatus> listAllStatus() {
+        URI uri = UriComponentsBuilder.fromHttpUrl(serverApiUrl)
+            .pathSegment("status")
+            .build()
+            .toUri();
+        ResponseEntity<SprinklerStatus[]> response = template.getForEntity(uri, SprinklerStatus[].class);
+        if (response.getStatusCode().is2xxSuccessful()) {
+            Assert.notNull(response.getBody(), "Expected body");
+            return Arrays.asList(response.getBody());
+        }
+        return Collections.emptyList();
     }
 }
