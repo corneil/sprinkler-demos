@@ -13,7 +13,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.integration.config.EnableIntegration;
 import org.springframework.messaging.Message;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -41,7 +40,6 @@ class SimulationTimerGenerationTests {
 
 	@SpringBootApplication
 	@EnableConfigurationProperties(TimerSimulationProperties.class)
-	@EnableIntegration
 	@EnableTransactionManagement
 	public static class TestApplication {
 		public static void main(String[] args) {

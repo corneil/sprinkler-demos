@@ -152,7 +152,10 @@
                         <names>
                         </names>
                         <sourceTypes>
-                            <filter>com.example.sprinkler.simulation_timer.TimerSimulationProperties</filter>
+                            <filter>
+                                com.example.sprinkler.simulation_timer.TimerSimulationProperties
+                                com.example.sprinkler.client.SimulationClientProperties
+                            </filter>
                         </sourceTypes>
                     </metadataFilter>
                 </configuration>
