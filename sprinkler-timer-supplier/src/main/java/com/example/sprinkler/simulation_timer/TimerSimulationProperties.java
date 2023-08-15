@@ -7,13 +7,26 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "simulation.timer")
 public class TimerSimulationProperties {
-	// first time produced
+
+	/**
+	 * The first date/time in the generated date range (ie. first event).
+	 */
 	private ZonedDateTime startTime;
-	// first time + runTime is the time of last simulation
+
+	/**
+	 * The amount of time the generated date range should cover (ie. 'startTime + runTime' is the last event).
+	 */
 	private Duration runTime;
-	// represents the time of the event time between to events.
+
+	/**
+	 * The amount of time between events (ie. ‘startTime + runTime / cycleDuration' is the amount of events
+	 * to generate during the simulation).
+	 */
 	private Duration cycleDuration;
-	// represents to total time take to deliver all events.
+
+	/**
+	 * The total amount of time the simulation should take to deliver all events.
+	 */
 	private Duration simulationTime;
 
 	public Duration getRunTime() {

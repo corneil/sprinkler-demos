@@ -34,7 +34,7 @@
     <dependencies>
         <dependency>
             <groupId>com.example.sprinkler</groupId>
-            <artifactId>simulation-timer-supplier</artifactId>
+            <artifactId>sprinkler-timer-supplier</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -73,11 +73,6 @@
             <groupId>io.micrometer.prometheus</groupId>
             <artifactId>prometheus-rsocket-spring</artifactId>
             <version>1.5.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.example.sprinkler</groupId>
-            <artifactId>simulation-timer-supplier</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud.stream.app</groupId>
