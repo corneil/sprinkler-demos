@@ -8,7 +8,7 @@
         <version>3.1.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.example.sprinkler</groupId>
+    <groupId>io.spring.sprinkler</groupId>
     <artifactId>sprinkler-timer-source</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>sprinkler-timer-source</name>
@@ -23,7 +23,7 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.example.sprinkler</groupId>
+                <groupId>io.spring.sprinkler</groupId>
                 <artifactId>sprinkler-demos</artifactId>
                 <version>1.0.0-SNAPSHOT</version>
                 <scope>import</scope>
@@ -33,12 +33,12 @@
     </dependencyManagement>
     <dependencies>
         <dependency>
-            <groupId>com.example.sprinkler</groupId>
+            <groupId>io.spring.sprinkler</groupId>
             <artifactId>sprinkler-timer-supplier</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.example.sprinkler</groupId>
+            <groupId>io.spring.sprinkler</groupId>
             <artifactId>sprinkler-simulation-client</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
@@ -112,7 +112,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <imageName>sprinkler-demos/${project.artifactId}:${project.version}</imageName>
+                    <imageName>corneil/${project.artifactId}:${project.version}</imageName>
                 </configuration>
             </plugin>
 
@@ -148,8 +148,8 @@
                         </names>
                         <sourceTypes>
                             <filter>
-                                com.example.sprinkler.simulation_timer.TimerSimulationProperties
-                                com.example.sprinkler.client.SimulationClientProperties
+                                io.spring.sprinkler.timer.TimerSimulationProperties
+                                io.spring.sprinkler.client.SimulationClientProperties
                             </filter>
                         </sourceTypes>
                     </metadataFilter>

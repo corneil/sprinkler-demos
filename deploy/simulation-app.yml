@@ -10,8 +10,7 @@ data:
     logging:
       level:
         root: info
-        org.springframework: debug
-        com.example.sprinkler: debug
+        io.spring.sprinkler: debug
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -31,7 +30,7 @@ spec:
     spec:
       containers:
         - name: sprinkler-app
-          image: sprinkler-demos/sprinkler-simulation-app:1.0.0-SNAPSHOT
+          image: corneil/sprinkler-simulation-app:latest
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: config

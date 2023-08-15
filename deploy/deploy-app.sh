@@ -6,6 +6,6 @@ kubectl delete deployment sprinkler-app --namespace $NS
 kubectl delete service sprinkler-app --namespace $NS
 kubectl delete configmap sprinkler-app --namespace $NS
 set -e
-$SCDF/src/deploy/k8s/load-image.sh sprinkler-demos/sprinkler-simulation-app 1.0.0-SNAPSHOT true
+$SCDF/src/deploy/k8s/load-image.sh corneil/sprinkler-simulation-app latest true
 kubectl create --namespace $NS -f "$SCDIR/simulation-app.yml"
 kubectl rollout status deployment --namespace "$NS" sprinkler-app

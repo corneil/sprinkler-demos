@@ -8,7 +8,7 @@
         <version>3.1.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.example.sprinkler</groupId>
+    <groupId>io.spring.sprinkler</groupId>
     <artifactId>sprinkler-decision-processor</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>sprinkler-decision-processor</name>
@@ -22,7 +22,7 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.example.sprinkler</groupId>
+                <groupId>io.spring.sprinkler</groupId>
                 <artifactId>sprinkler-demos</artifactId>
                 <version>1.0.0-SNAPSHOT</version>
                 <scope>import</scope>
@@ -32,12 +32,12 @@
     </dependencyManagement>
     <dependencies>
         <dependency>
-            <groupId>com.example.sprinkler</groupId>
+            <groupId>io.spring.sprinkler</groupId>
             <artifactId>sprinkler-decision-function</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.example.sprinkler</groupId>
+            <groupId>io.spring.sprinkler</groupId>
             <artifactId>sprinkler-simulation-client</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
@@ -127,7 +127,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <imageName>sprinkler-demos/${project.artifactId}:${project.version}</imageName>
+                    <imageName>corneil/${project.artifactId}:${project.version}</imageName>
                 </configuration>
             </plugin>
             <plugin>
@@ -162,8 +162,8 @@
                         </names>
                         <sourceTypes>
                             <filter>
-                                com.example.sprinkler.decision.SprinklerDecisionProperties
-                                com.example.sprinkler.client.SimulationClientProperties
+                                io.spring.sprinkler.decision.SprinklerDecisionProperties
+                                io.spring.sprinkler.client.SimulationClientProperties
                             </filter>
                         </sourceTypes>
                     </metadataFilter>
