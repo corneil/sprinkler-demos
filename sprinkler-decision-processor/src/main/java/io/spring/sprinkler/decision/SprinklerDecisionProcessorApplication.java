@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
 @EnableConfigurationProperties({SprinklerDecisionProperties.class})
-@Import({SprinklerClientConfig.class, TimerRule.class})
+@Import({SprinklerClientConfig.class, TimerRule.class, RainRule.class, WeatherRule.class})
 public class SprinklerDecisionProcessorApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SprinklerDecisionProcessorApplication.class, args);

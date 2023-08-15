@@ -20,8 +20,8 @@ import org.springframework.messaging.support.GenericMessage;
 public class InputOutputConfiguration {
 	private final static Logger logger = LoggerFactory.getLogger(InputOutputConfiguration.class);
 
-	@Bean(name = "input")
-	public Function<Message<byte[]>, SprinklerEvent> input(ObjectMapper mapper) {
+	@Bean
+	public Function<Message<byte[]>, SprinklerEvent> bytesToEvent(ObjectMapper mapper) {
 		return event -> {
 			try {
 				logger.info("input:{}", event);
@@ -33,8 +33,8 @@ public class InputOutputConfiguration {
 		};
 	}
 
-	@Bean(name = "output")
-	public Function<SprinklerEvent, Message<byte[]>> output(ObjectMapper mapper) {
+	@Bean
+	public Function<SprinklerEvent, Message<byte[]>> eventToBytes(ObjectMapper mapper) {
 		return event -> {
 			try {
 				logger.info("output:{}", event);

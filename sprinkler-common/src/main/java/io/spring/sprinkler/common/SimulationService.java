@@ -8,7 +8,7 @@ import org.springframework.lang.NonNull;
 
 public interface SimulationService {
     Optional<SprinklerStatus> findLatestStatus(@NonNull ZonedDateTime timestamp);
-
+    void resetState();
     void updateSprinkler(SprinklerEvent event);
 
     /**

@@ -19,10 +19,10 @@ public class TimerSimulationProperties {
 	private Duration runTime;
 
 	/**
-	 * The amount of time between events (ie. ‘startTime + runTime / cycleDuration' is the amount of events
+	 * The amount of time between events (ie. ‘startTime + runTime / eventCycle' is the amount of events
 	 * to generate during the simulation).
 	 */
-	private Duration cycleDuration;
+	private Duration eventCycle;
 
 	/**
 	 * The total amount of time the simulation should take to deliver all events.
@@ -45,12 +45,12 @@ public class TimerSimulationProperties {
 		this.startTime = startTime;
 	}
 
-	public Duration getCycleDuration() {
-		return cycleDuration;
+	public Duration getEventCycle() {
+		return eventCycle;
 	}
 
-	public void setCycleDuration(Duration cycleDuration) {
-		this.cycleDuration = cycleDuration;
+	public void setEventCycle(Duration eventCycle) {
+		this.eventCycle = eventCycle;
 	}
 
 	public Duration getSimulationTime() {
@@ -66,7 +66,7 @@ public class TimerSimulationProperties {
         return "TimerSimulationProperties{" +
             "startTime=" + startTime +
             ", runTime=" + runTime +
-            ", cycleDuration=" + cycleDuration +
+            ", cycleDuration=" + eventCycle +
             ", simulationTime=" + simulationTime +
             '}';
     }

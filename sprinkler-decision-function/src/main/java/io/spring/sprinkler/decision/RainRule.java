@@ -28,19 +28,21 @@ public class RainRule {
 	public Function<SprinklerEvent, SprinklerEvent> rain(SimulationService simulationService, SprinklerDecisionProperties properties) {
 		return (input) -> {
 			logger.info("input:{}", input);
-			if (input.getState().equals(SprinklerState.OFF)) {
-				Double minRainMeasure = properties.getMinRainMeasure();
-				logger.info("minRainMeasure={}", minRainMeasure);
-				DateRange dateRange = new DateRange(input.getTimestamp().minus(properties.cycleDuration), input.getTimestamp());
-				Double rainMeasured = simulationService.rainMeasuredFor(dateRange);
-				logger.info("rainMeasured:{} for {}", rainMeasured, dateRange);
-				if (rainMeasured >= minRainMeasure) {
-					SprinklerEvent result = new SprinklerEvent(input.getId(),
-						input.getTimestamp(),
-						SprinklerState.OFF,
-						input.getReason() + ":OFF:rainMeasured=" + rainMeasured + ":minRainMeasure=" + minRainMeasure);
-					logger.info("result={}", result);
-					return result;
+			if(input != null) {
+				if (input.getState().equals(SprinklerState.OFF)) {
+					Double minRainMeasure = properties.getMinRainMeasure();
+					logger.info("minRainMeasure={}", minRainMeasure);
+					DateRange dateRange = new DateRange(input.getTimestamp().minus(properties.cycleDuration), input.getTimestamp());
+					Double rainMeasured = simulationService.rainMeasuredFor(dateRange);
+					logger.info("rainMeasured:{} for {}", rainMeasured, dateRange);
+					if (rainMeasured >= minRainMeasure) {
+						SprinklerEvent result = new SprinklerEvent(input.getId(),
+							input.getTimestamp(),
+							SprinklerState.OFF,
+							input.getReason() + ":OFF:rainMeasured=" + rainMeasured + ":minRainMeasure=" + minRainMeasure);
+						logger.info("result={}", result);
+						return result;
+					}
 				}
 			}
 			return input;

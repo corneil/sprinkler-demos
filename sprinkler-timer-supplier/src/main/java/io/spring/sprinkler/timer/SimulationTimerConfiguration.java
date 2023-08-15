@@ -54,8 +54,8 @@ public class SimulationTimerConfiguration {
 			next = properties.getStartTime();
 			last = properties.getStartTime().plus(totalRunTime);
 		}
-		Assert.isTrue(totalRunTime.toMillis() > properties.getCycleDuration().toMillis(), "Total run time must be larger than cycleDuration");
-		eventCount = totalRunTime.toMillis() / properties.getCycleDuration().toMillis();
+		Assert.isTrue(totalRunTime.toMillis() > properties.getEventCycle().toMillis(), "Total run time must be larger than cycleDuration");
+		eventCount = totalRunTime.toMillis() / properties.getEventCycle().toMillis();
 		long minSimTime = Math.max(eventCount, properties.getSimulationTime().toMillis());
 		logger.info("eventCount={}, simulationTime={}ms", eventCount, minSimTime);
 		eventRate = Math.max(minSimTime / eventCount, 1L);
@@ -85,7 +85,7 @@ public class SimulationTimerConfiguration {
 		if (last == null || last.isAfter(next)) {
 			SprinklerEvent event = new SprinklerEvent(uuid.toString(), next, null, null);
 			logger.info("event:{}", event);
-			next = next.plus(properties.getCycleDuration());
+			next = next.plus(properties.getEventCycle());
 			return new GenericMessage<>(event);
 		}
 		logger.info("event:null");

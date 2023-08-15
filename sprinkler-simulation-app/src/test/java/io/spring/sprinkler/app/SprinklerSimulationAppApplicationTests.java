@@ -140,6 +140,20 @@ class SprinklerSimulationAppApplicationTests {
 		assertThat(allStatus).isNotNull();
 		assertThat(allStatus).isNotEmpty();
 		assertThat(allStatus).hasAtLeastOneElementOfType(SprinklerStatus.class);
+		mockMvc.perform(post("/api/reset"))
+			.andDo(print())
+			.andExpect(status().isOk());
+		result = mockMvc.perform(get("/api/status")
+				.accept(MediaType.APPLICATION_JSON)
+			).andDo(print())
+			.andExpect(status().isOk());
+		response = result.andReturn().getResponse();
+		content = response.getContentAsString();
+		assertThat(content).isNotBlank();
+		allStatus = mapper.readValue(content, SprinklerStatus[].class);
+		assertThat(allStatus).isNotNull();
+		assertThat(allStatus).hasSize(1);
+		assertThat(allStatus).hasAtLeastOneElementOfType(SprinklerStatus.class);
 	}
 
 }

@@ -83,6 +83,11 @@ public class SprinklerSimulatorController {
         simulationService.updateSprinkler(event);
         return ResponseEntity.ok().build();
     }
+    @PostMapping(value = "reset")
+    public ResponseEntity<Void> reset() {
+        simulationService.resetState();
+        return ResponseEntity.ok().build();
+    }
 
     @GetMapping(value = "date-range", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     public ResponseEntity<DateRange> findDateRange() {

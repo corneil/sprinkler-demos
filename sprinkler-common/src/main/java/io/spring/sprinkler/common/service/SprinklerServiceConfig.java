@@ -29,8 +29,8 @@ public class SprinklerServiceConfig {
     }
 
     @Bean
-    public SimulationService simulationService(SprinklerStatusRepository statusRepository, WeatherDataRepository weatherDataRepository) {
-        return new SimulationServiceImpl(statusRepository, weatherDataRepository);
+    public SimulationService simulationService(SprinklerStatusRepository statusRepository, WeatherDataRepository weatherDataRepository, JdbcTemplate jdbcTemplate) {
+        return new SimulationServiceImpl(statusRepository, weatherDataRepository, jdbcTemplate);
     }
 
     @Bean

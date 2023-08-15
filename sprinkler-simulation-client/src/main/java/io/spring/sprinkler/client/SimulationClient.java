@@ -54,6 +54,15 @@ public class SimulationClient implements SimulationService {
     }
 
     @Override
+    public void resetState() {
+        URI uri = UriComponentsBuilder.fromHttpUrl(serverApiUrl)
+            .pathSegment("reset")
+            .build()
+            .toUri();
+        template.postForLocation(uri, null);
+    }
+
+    @Override
     public DateRange findDateRange() {
         URI uri = UriComponentsBuilder.fromHttpUrl(serverApiUrl)
             .pathSegment("date-range")
