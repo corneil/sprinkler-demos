@@ -1,0 +1,42 @@
+= Sprinkler Report Task
+
+In this lab, you will learn how to register a task application named sprinkler_report. You will learn how to create a definition for the application, as well as launch the definition, monitor the execution, and schedule a launch for the task definition.  The sprinkler-report application will read from the `weather_data` table and the `sensor_state` table to generate a descriptive state of the sensor for each date and insert the results into a new `sprinkler_report` table.
+
+== Requirements:
+
+* Java 17 or Above
+
+== Classes:
+
+* SprinklerReportApplication - the Spring Boot Main Application
+* SprinklerReportConfiguration - the configuration that enables Spring Cloud Task and defines the batch job for processing the data.
+
+== Build:
+
+[source,shell]
+----
+mvn clean package
+----
+
+=== Run from command line:
+
+[source,shell]
+----
+java -jar target/sprinkler-report-1.0.0.jar
+----
+
+== Build Docker Image:
+
+[source,shell]
+----
+mvn spring-boot:build-image
+----
+
+=== Run docker container:
+
+[source,shell]
+----
+docker run sprinkler-report:1.0.0
+----
+
+
