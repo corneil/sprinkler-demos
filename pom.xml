@@ -103,8 +103,8 @@
         <module>sprinkler-simulation-client</module>
         <module>sprinkler-decision-function</module>
         <module>sprinkler-decision-processor</module>
-        <module>sprinkler-timer-supplier</module>
-        <module>sprinkler-timer-source</module>
+        <module>sprinkler-event-supplier</module>
+        <module>sprinkler-event-source</module>
         <module>sprinkler-data-consumer</module>
         <module>sprinkler-data-sink</module>
         <module>sprinkler-report</module>

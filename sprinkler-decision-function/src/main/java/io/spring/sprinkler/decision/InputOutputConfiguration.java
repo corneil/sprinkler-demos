@@ -18,7 +18,7 @@ import org.springframework.messaging.support.GenericMessage;
 
 @Configuration
 public class InputOutputConfiguration {
-	private final static Logger logger = LoggerFactory.getLogger(InputOutputConfiguration.class);
+	private final static Logger logger = LoggerFactory.getLogger("io");
 
 	@Bean
 	public Function<Message<byte[]>, SprinklerEvent> bytesToEvent(ObjectMapper mapper) {

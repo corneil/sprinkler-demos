@@ -26,7 +26,7 @@ import org.springframework.util.Assert;
 @Configuration
 @EnableConfigurationProperties(TimerSimulationProperties.class)
 public class SimulationTimerConfiguration {
-	private final static Logger logger = LoggerFactory.getLogger(SimulationTimerConfiguration.class);
+	private final static Logger logger = LoggerFactory.getLogger("event");
 
 	final UUID uuid = UUID.randomUUID();
 

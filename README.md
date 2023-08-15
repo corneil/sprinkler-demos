@@ -29,7 +29,7 @@ export NS=<dataflow-namespace>
 
 This will register 3 applications:
 
-* Source - sprinkler-timer
+* Source - sprinkler-event
 * Processor - sprinkler-decision
 * Sink - sprinkler-data
 
@@ -39,7 +39,7 @@ export DATAFLOW_VERSION=2.11.0-RC1
 ```
 
 ## Deploy a Stream
-This will create and deploy a stream with the definition `sprinkler-timer | sprinkler-decision | sprinkler-data`
+This will create and deploy a stream with the definition `sprinkler-event | sprinkler-decision | sprinkler-data`
 
 ```shell
 export DATAFLOW_VERSION=2.11.0-RC1

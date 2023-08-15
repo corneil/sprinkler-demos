@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableConfigurationProperties(SprinklerDecisionProperties.class)
 public class WeatherRule {
-	private final static Logger logger = LoggerFactory.getLogger(WeatherRule.class);
+	private final static Logger logger = LoggerFactory.getLogger("weather");
 
 	@Bean(name = "weather")
 	public Function<SprinklerEvent, SprinklerEvent> weather(SimulationService simulationService, SprinklerDecisionProperties properties) {

@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>io.spring.sprinkler</groupId>
-    <artifactId>sprinkler-timer-source</artifactId>
+    <artifactId>sprinkler-event-source</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>sprinkler-timer-source</name>
+    <name>sprinkler-event-source</name>
     <description>Simulation Timer Source</description>
     <properties>
         <java.version>17</java.version>
@@ -34,7 +34,7 @@
     <dependencies>
         <dependency>
             <groupId>io.spring.sprinkler</groupId>
-            <artifactId>sprinkler-timer-supplier</artifactId>
+            <artifactId>sprinkler-event-supplier</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>

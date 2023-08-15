@@ -21,7 +21,7 @@ import org.springframework.messaging.support.GenericMessage;
 @Configuration
 @EnableConfigurationProperties(SprinklerDecisionProperties.class)
 public class RainRule {
-	private final static Logger logger = LoggerFactory.getLogger(RainRule.class);
+	private final static Logger logger = LoggerFactory.getLogger("rain");
 
 
 	@Bean(name = "rain")

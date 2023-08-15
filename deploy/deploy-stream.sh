@@ -2,7 +2,7 @@
 SCDIR=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")
 SCDF="$(realpath $SCDIR/../../spring-cloud-dataflow)"
 cat > deploy-sprinkler-simulation.shell <<EOF
-stream create --name sprinkler-simulation --definition "sprinkler-timer | sprinkler-decision | sprinkler-data"
+stream create --name sprinkler-simulation --definition "sprinkler-event | sprinkler-decision | sprinkler-data"
 stream deploy --name sprinkler-simulation
 EOF
 

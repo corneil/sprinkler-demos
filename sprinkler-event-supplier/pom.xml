@@ -8,8 +8,8 @@
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../</relativePath>
     </parent>
-    <artifactId>sprinkler-timer-supplier</artifactId>
-    <name>sprinkler-timer-supplier</name>
+    <artifactId>sprinkler-event-supplier</artifactId>
+    <name>sprinkler-event-supplier</name>
     <description>Sprinkler Simulation</description>
     <packaging>jar</packaging>
     <dependencies>

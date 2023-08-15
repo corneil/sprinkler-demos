@@ -20,7 +20,7 @@ import org.springframework.util.StringUtils;
 @Configuration
 @EnableConfigurationProperties(SprinklerDecisionProperties.class)
 public class TimerRule {
-	private final static Logger logger = LoggerFactory.getLogger(TimerRule.class);
+	private final static Logger logger = LoggerFactory.getLogger("timer");
 
 	@Bean(name = "timer")
 	public Function<SprinklerEvent, SprinklerEvent> timer(SimulationService service, SprinklerDecisionProperties properties) {
