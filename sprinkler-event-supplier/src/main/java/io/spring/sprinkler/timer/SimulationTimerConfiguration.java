@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 import io.spring.sprinkler.common.DateRange;
@@ -75,7 +76,7 @@ public class SimulationTimerConfiguration {
         return () -> Mono.<Message<SprinklerEvent>>create(monoSink ->
                 monoSink.onRequest(value -> monoSink.success(this.createEvent(properties, simulationService))))
             .filter(Objects::nonNull)
-            .subscribeOn(Schedulers.immediate())
+            .subscribeOn(Schedulers.newBoundedElastic(1,1, "event"))
             .delayElement(Duration.ofMillis(eventRate))
             .repeat(eventCount);
     }

@@ -2,7 +2,9 @@ package io.spring.sprinkler.common;
 
 import java.time.ZonedDateTime;
 
-public record SprinklerEvent(String id, ZonedDateTime timestamp, SprinklerState state, String reason) {
+import org.springframework.lang.Nullable;
+
+public record SprinklerEvent(String id, ZonedDateTime timestamp, @Nullable SprinklerState state, @Nullable String reason) {
     public String getId() {
         return id;
     }
