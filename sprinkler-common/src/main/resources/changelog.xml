@@ -8,7 +8,7 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
     <changeSet id="create_weather_data" author="corneil">
         <createTable tableName="WEATHER_DATA">
             <column name="WEATHER_TIME" type="timestamp">
-                <constraints nullable="false"/>
+                <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="PREDICTION" type="double">
                 <constraints nullable="false"/>
@@ -24,12 +24,15 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="STATUS_TIME" type="timestamp">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="STATE" type="varchar(4)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
+        <createIndex tableName="SPRINKLER_STATE" indexName="IX_SPRINKLER_STATE" unique="true">
+            <column name="STATUS_TIME"/>
+        </createIndex>
         <createSequence sequenceName="SPRINKLER_STATE_SEQ" startValue="1" minValue="1"/>
     </changeSet>
 

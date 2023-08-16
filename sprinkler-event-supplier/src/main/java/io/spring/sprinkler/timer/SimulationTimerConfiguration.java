@@ -2,6 +2,7 @@ package io.spring.sprinkler.timer;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -26,69 +27,70 @@ import org.springframework.util.Assert;
 @Configuration
 @EnableConfigurationProperties(TimerSimulationProperties.class)
 public class SimulationTimerConfiguration {
-	private final static Logger logger = LoggerFactory.getLogger("event");
+    private final static Logger logger = LoggerFactory.getLogger("event");
 
-	final UUID uuid = UUID.randomUUID();
+    final UUID uuid = UUID.randomUUID();
 
-	ZonedDateTime next = null;
+    ZonedDateTime next = null;
 
-	ZonedDateTime last = null;
+    ZonedDateTime last = null;
 
-	long eventCount = 0;
+    long eventCount = 0;
 
-	long eventRate = 0;
+    long eventRate = 0;
 
-	private void configure(
-		TimerSimulationProperties properties,
-		@Autowired(required = false) SimulationService simulationService
-	) {
-		logger.info("configure:{}", properties);
-		Duration totalRunTime = properties.getRunTime();
-		if (simulationService != null) {
-			DateRange range = simulationService.findDateRange();
-			totalRunTime = Duration.between(range.getStart(), range.getEnd());
-			logger.info("simulationService:dateRange={}, total run time:{}", range, totalRunTime);
-			next = range.getStart();
-			last = range.getEnd();
-		} else {
-			next = properties.getStartTime();
-			last = properties.getStartTime().plus(totalRunTime);
-		}
-		Assert.isTrue(totalRunTime.toMillis() > properties.getEventCycle().toMillis(), "Total run time must be larger than cycleDuration");
-		eventCount = totalRunTime.toMillis() / properties.getEventCycle().toMillis();
-		long minSimTime = Math.max(eventCount, properties.getSimulationTime().toMillis());
-		logger.info("eventCount={}, simulationTime={}ms", eventCount, minSimTime);
-		eventRate = Math.max(minSimTime / eventCount, 1L);
-		logger.info("fixed-rate={}ms", eventRate);
-	}
+    private void configure(
+        TimerSimulationProperties properties,
+        @Autowired(required = false) SimulationService simulationService
+    ) {
+        logger.info("configure:{}", properties);
+        Duration totalRunTime = properties.getRunTime();
+        if (simulationService != null) {
+            DateRange range = simulationService.findDateRange();
+            totalRunTime = Duration.between(range.getStart(), range.getEnd());
+            logger.info("simulationService:dateRange={}, total run time:{}", range, totalRunTime);
+            next = range.getStart();
+            last = range.getEnd();
+        } else {
+            next = properties.getStartTime();
+            last = properties.getStartTime().plus(totalRunTime);
+        }
+        Assert.isTrue(totalRunTime.toMillis() > properties.getEventCycle().toMillis(), "Total run time must be larger than cycleDuration");
+        eventCount = totalRunTime.toMillis() / properties.getEventCycle().toMillis();
+        long minSimTime = Math.max(eventCount, properties.getSimulationTime().toMillis());
+        logger.info("eventCount={}, simulationTime={}ms", eventCount, minSimTime);
+        eventRate = Math.max(minSimTime / eventCount, 1L);
+        logger.info("fixed-rate={}ms", eventRate);
+    }
 
-	@Bean
-	@Primary
-	public Supplier<Flux<Message<SprinklerEvent>>> event(
-		TimerSimulationProperties properties,
-		@Autowired(required = false) SimulationService simulationService
-	) {
-		if (last == null || next == null) {
-			configure(properties, simulationService);
-		}
-		return () -> Mono.<Message<SprinklerEvent>>create(monoSink ->
-				monoSink.onRequest(value -> monoSink.success(this.createEvent(properties, simulationService))))
-			.subscribeOn(Schedulers.immediate())
-			.delayElement(Duration.ofMillis(eventRate))
-			.repeat(eventCount);
-	}
+    @Bean
+    @Primary
+    public Supplier<Flux<Message<SprinklerEvent>>> event(
+        TimerSimulationProperties properties,
+        @Autowired(required = false) SimulationService simulationService
+    ) {
+        if (last == null || next == null) {
+            configure(properties, simulationService);
+        }
+        return () -> Mono.<Message<SprinklerEvent>>create(monoSink ->
+                monoSink.onRequest(value -> monoSink.success(this.createEvent(properties, simulationService))))
+            .filter(Objects::nonNull)
+            .subscribeOn(Schedulers.immediate())
+            .delayElement(Duration.ofMillis(eventRate))
+            .repeat(eventCount);
+    }
 
-	private Message<SprinklerEvent> createEvent(TimerSimulationProperties properties, @Autowired(required = false) SimulationService simulationService) {
+    private Message<SprinklerEvent> createEvent(TimerSimulationProperties properties, @Autowired(required = false) SimulationService simulationService) {
 
-		logger.info("properties:{}", properties);
-		logger.info("next={}, last={}", next, last);
-		if (last == null || last.isAfter(next)) {
-			SprinklerEvent event = new SprinklerEvent(uuid.toString(), next, null, null);
-			logger.info("event:{}", event);
-			next = next.plus(properties.getEventCycle());
-			return new GenericMessage<>(event);
-		}
-		logger.info("event:null");
-		return null;
-	}
+        logger.info("properties:{}", properties);
+        logger.info("next={}, last={}", next, last);
+        if (last == null || last.isAfter(next)) {
+            SprinklerEvent event = new SprinklerEvent(uuid.toString(), next, null, null);
+            logger.info("event:{}", event);
+            next = next.plus(properties.getEventCycle());
+            return new GenericMessage<>(event);
+        }
+        logger.info("event:null");
+        return null;
+    }
 }

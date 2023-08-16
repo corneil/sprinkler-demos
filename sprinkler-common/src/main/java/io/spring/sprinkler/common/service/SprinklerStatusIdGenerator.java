@@ -21,7 +21,7 @@ public class SprinklerStatusIdGenerator implements BeforeConvertCallback<Sprinkl
     @Override
     public SprinklerStatusEntity onBeforeConvert(SprinklerStatusEntity entity) {
         if (entity.getId() == null) {
-            Long id = jdbcTemplate.queryForObject("select nextval(SPRINKLER_STATE_SEQ)", Long.TYPE);
+            Long id = jdbcTemplate.queryForObject("select NEXT VALUE FOR SPRINKLER_STATE_SEQ", Long.TYPE);
             log.info("generated id:{}", id);
             Assert.notNull(id, "Expected id from SPRINKLER_STATE_SEQ");
             entity.setId(id);

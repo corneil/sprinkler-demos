@@ -1,6 +1,7 @@
 package io.spring.sprinkler.decision;
 
 import java.io.IOException;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -11,6 +12,7 @@ import io.spring.sprinkler.common.SprinklerEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
@@ -34,14 +36,13 @@ public class InputOutputConfiguration {
     }
 
     @Bean
-    public Function<SprinklerEvent, Message<byte[]>> write(ObjectMapper mapper) {
+    public Consumer<SprinklerEvent> write(ObjectMapper mapper, StreamBridge streamBridge) {
         return event -> {
             try {
                 logger.info("output:{}", event);
+
                 if (event != null) {
-                    return new GenericMessage<>(mapper.writeValueAsBytes(event));
-                } else {
-                    return null;
+                    streamBridge.send("output", new GenericMessage<>(mapper.writeValueAsBytes(event)));
                 }
             } catch (JsonProcessingException e) {
                 logger.error("Exception writing:" + e, e);

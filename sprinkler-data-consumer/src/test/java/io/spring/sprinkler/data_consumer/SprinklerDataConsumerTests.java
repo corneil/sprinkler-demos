@@ -43,7 +43,7 @@ class SprinklerDataConsumerTests {
 
     @Test
     void testData() {
-        ZonedDateTime now = ZonedDateTime.parse("2023-08-02T01:00:00+02:00");
+        ZonedDateTime now = ZonedDateTime.parse("2023-08-02T01:00:00+00:00");
         SprinklerEvent event = new SprinklerEvent(UUID.randomUUID().toString(), now, SprinklerState.ON, "TEST");
         dataConsumer.accept(event);
         Optional<SprinklerStatus> status = simulationService.findLatestStatus(now);

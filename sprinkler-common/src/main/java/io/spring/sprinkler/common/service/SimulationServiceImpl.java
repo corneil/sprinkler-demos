@@ -1,6 +1,7 @@
 package io.spring.sprinkler.common.service;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -27,6 +28,7 @@ public class SimulationServiceImpl implements SimulationService {
     private final SprinklerStatusRepository statusRepository;
 
     private final WeatherDataRepository weatherDataRepository;
+
     private final JdbcTemplate jdbcTemplate;
 
     public SimulationServiceImpl(SprinklerStatusRepository statusRepository, WeatherDataRepository weatherDataRepository, JdbcTemplate jdbcTemplate) {
@@ -56,13 +58,20 @@ public class SimulationServiceImpl implements SimulationService {
     @Transactional
     public void updateSprinkler(@NonNull SprinklerEvent event) {
         Assert.notNull(event, "event required");
-        Optional<SprinklerStatusEntity> latest = statusRepository.findLatestFor(Timestamp.from(event.getTimestamp().toInstant()));
-        logger.debug("updateSprinkler:latest={}", latest.orElse(null));
-        if (latest.isEmpty() || (latest.get().getStatusTime().toInstant().isBefore(event.getTimestamp().toInstant()) && !latest.get()
-            .getState()
-            .equals(event.getState()))) {
-            SprinklerStatusEntity status = statusRepository.save(new SprinklerStatusEntity(Timestamp.from(event.getTimestamp().toInstant()), event.getState()));
-            logger.debug("updateSprinkler:status={}", status);
+        logger.info("event:{}", event);
+        Instant eventTimestamp = event.getTimestamp().toInstant();
+        long count = statusRepository.countByStatusTimeGreaterThan(Timestamp.from(eventTimestamp));
+        if (count > 0) {
+            logger.info("deleting:{} items after:{}", count, eventTimestamp);
+            statusRepository.deleteByStatusTimeGreaterThan(Timestamp.from(eventTimestamp));
+        }
+        Optional<SprinklerStatusEntity> latest = statusRepository.findLatestFor(Timestamp.from(eventTimestamp));
+        if (latest.isEmpty() || !latest.get().getState().equals(event.getState())) {
+            logger.info("updateSprinkler:latest={}", latest.orElse(null));
+            SprinklerStatusEntity status = statusRepository.save(new SprinklerStatusEntity(Timestamp.from(eventTimestamp), event.getState()));
+            logger.info("updateSprinkler:status={}", status);
+        } else {
+            logger.info("updateSprinkler:skipped:latest={}", latest.orElse(null));
         }
     }
 

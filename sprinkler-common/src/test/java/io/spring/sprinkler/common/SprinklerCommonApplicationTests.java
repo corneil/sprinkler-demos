@@ -79,7 +79,7 @@ class SprinklerCommonApplicationTests {
 		ZonedDateTime now = Timestamp.valueOf("2023-08-01 13:00:00").toInstant().atZone(ZoneOffset.UTC);
 		Optional<SprinklerStatus> state = simulationService.findLatestStatus(now);
 		assertThat(state).isNotPresent();
-		SprinklerState sprinklerState = SprinklerState.ON.equals(state.get().getState()) ? SprinklerState.OFF : SprinklerState.ON;
+		SprinklerState sprinklerState = SprinklerState.ON;
 		SprinklerEvent event = new SprinklerEvent(UUID.randomUUID().toString(), now, sprinklerState, "Test");
 		simulationService.updateSprinkler(event);
 	}
