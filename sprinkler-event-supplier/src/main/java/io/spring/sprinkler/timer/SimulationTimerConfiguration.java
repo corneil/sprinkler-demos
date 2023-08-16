@@ -62,9 +62,9 @@ public class SimulationTimerConfiguration {
 		logger.info("fixed-rate={}ms", eventRate);
 	}
 
-	@Bean(name = "timer")
+	@Bean
 	@Primary
-	public Supplier<Flux<Message<SprinklerEvent>>> timer(
+	public Supplier<Flux<Message<SprinklerEvent>>> event(
 		TimerSimulationProperties properties,
 		@Autowired(required = false) SimulationService simulationService
 	) {

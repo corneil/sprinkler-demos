@@ -5,7 +5,7 @@ import java.time.ZonedDateTime;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "simulation.timer")
+@ConfigurationProperties(prefix = "simulation.event")
 public class TimerSimulationProperties {
 
 	/**

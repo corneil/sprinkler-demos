@@ -21,10 +21,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = SimulationTimerGenerationTests.TestApplication.class)
 @TestPropertySource(properties = {
-	"simulation.timer.event-cycle=PT30M",
-	"simulation.timer.start-time=2023-08-01T23:59:59.000+02:00",
-	"simulation.timer.run-time=P2D",
-	"simulation.timer.simulation-time=PT10S"
+	"simulation.event.event-cycle=PT30M",
+	"simulation.event.start-time=2023-08-01T23:59:59.000+02:00",
+	"simulation.event.run-time=P2D",
+	"simulation.event.simulation-time=PT10S"
 })
 class SimulationTimerGenerationTests {
 	@Autowired

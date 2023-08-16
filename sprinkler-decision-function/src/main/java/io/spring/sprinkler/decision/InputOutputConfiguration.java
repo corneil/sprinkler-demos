@@ -18,39 +18,43 @@ import org.springframework.messaging.support.GenericMessage;
 
 @Configuration
 public class InputOutputConfiguration {
-	private final static Logger logger = LoggerFactory.getLogger("io");
+    private final static Logger logger = LoggerFactory.getLogger("io");
 
-	@Bean
-	public Function<Message<byte[]>, SprinklerEvent> bytesToEvent(ObjectMapper mapper) {
-		return event -> {
-			try {
-				logger.info("input:{}", event);
-				return mapper.readValue(event.getPayload(), SprinklerEvent.class);
-			} catch (IOException e) {
-				logger.error("Exception parsing:" + e, e);
-				throw new RuntimeException("Exception parsing:" + e, e);
-			}
-		};
-	}
+    @Bean
+    public Function<Message<byte[]>, SprinklerEvent> parse(ObjectMapper mapper) {
+        return event -> {
+            try {
+                logger.info("input:{}", event);
+                return event.getPayload() != null ? mapper.readValue(event.getPayload(), SprinklerEvent.class) : null;
+            } catch (IOException e) {
+                logger.error("Exception parsing:" + e, e);
+                throw new RuntimeException("Exception parsing:" + e, e);
+            }
+        };
+    }
 
-	@Bean
-	public Function<SprinklerEvent, Message<byte[]>> eventToBytes(ObjectMapper mapper) {
-		return event -> {
-			try {
-				logger.info("output:{}", event);
-				return new GenericMessage<>(mapper.writeValueAsBytes(event));
-			} catch (JsonProcessingException e) {
-				logger.error("Exception writing:" + e, e);
-				throw new RuntimeException("Exception writing:" + e, e);
-			}
-		};
-	}
+    @Bean
+    public Function<SprinklerEvent, Message<byte[]>> write(ObjectMapper mapper) {
+        return event -> {
+            try {
+                logger.info("output:{}", event);
+                if (event != null) {
+                    return new GenericMessage<>(mapper.writeValueAsBytes(event));
+                } else {
+                    return null;
+                }
+            } catch (JsonProcessingException e) {
+                logger.error("Exception writing:" + e, e);
+                throw new RuntimeException("Exception writing:" + e, e);
+            }
+        };
+    }
 
-	@Bean
-	public ObjectMapper mapper() {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.registerModule(new JavaTimeModule());
-		mapper.registerModule(new Jdk8Module());
-		return mapper;
-	}
+    @Bean
+    public ObjectMapper mapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.registerModule(new Jdk8Module());
+        return mapper;
+    }
 }
