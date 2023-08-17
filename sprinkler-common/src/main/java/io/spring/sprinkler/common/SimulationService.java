@@ -23,4 +23,5 @@ public interface SimulationService {
     Optional<WeatherData> latestWeather(ZonedDateTime timestamp);
 
     Double rainMeasuredFor(DateRange range);
+    List<SprinklerHistory> listHistory();
 }

@@ -7,6 +7,7 @@ import java.util.Optional;
 import io.spring.sprinkler.common.DateRange;
 import io.spring.sprinkler.common.SimulationService;
 import io.spring.sprinkler.common.SprinklerEvent;
+import io.spring.sprinkler.common.SprinklerHistory;
 import io.spring.sprinkler.common.SprinklerStatus;
 import io.spring.sprinkler.common.WeatherData;
 
@@ -63,6 +64,7 @@ public class SprinklerSimulatorController {
         resource.add(linkTo(methodOn(SprinklerSimulatorController.class).listAllStatus()).withRel("status"));
         resource.add(linkTo(methodOn(SprinklerSimulatorController.class).rainMeasuredFor(null, null)).withRel("rain"));
         resource.add(linkTo(methodOn(SprinklerSimulatorController.class).updateSprinkler(null)).withRel("update"));
+        resource.add(linkTo(methodOn(SprinklerSimulatorController.class).history()).withRel("history"));
         return ResponseEntity.ok(resource);
     }
 
@@ -83,10 +85,16 @@ public class SprinklerSimulatorController {
         simulationService.updateSprinkler(event);
         return ResponseEntity.ok().build();
     }
+
     @PostMapping(value = "reset")
     public ResponseEntity<Void> reset() {
         simulationService.resetState();
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(value = "history", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<SprinklerHistory>> history() {
+        return ResponseEntity.ok(simulationService.listHistory());
     }
 
     @GetMapping(value = "date-range", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)

@@ -91,7 +91,7 @@ public class SimulationTimerConfiguration {
             next = next.plus(properties.getEventCycle());
             return new GenericMessage<>(event);
         }
-        logger.info("event:null");
+        logger.info("event:end");
         return null;
     }
 }

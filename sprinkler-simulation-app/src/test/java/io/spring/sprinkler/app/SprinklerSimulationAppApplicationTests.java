@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.spring.sprinkler.common.DateRange;
 import io.spring.sprinkler.common.SimulationService;
 import io.spring.sprinkler.common.SprinklerEvent;
+import io.spring.sprinkler.common.SprinklerHistory;
 import io.spring.sprinkler.common.SprinklerState;
 import io.spring.sprinkler.common.SprinklerStatus;
 import io.spring.sprinkler.common.WeatherData;
@@ -73,7 +74,7 @@ class SprinklerSimulationAppApplicationTests {
 	}
 
 	@Test
-	void contextLoads() throws Exception {
+	void testApi() throws Exception {
 		ResultActions result = mockMvc.perform(get("/api")
 				.accept(MediaType.APPLICATION_JSON)
 			).andDo(print())
@@ -140,6 +141,16 @@ class SprinklerSimulationAppApplicationTests {
 		assertThat(allStatus).isNotNull();
 		assertThat(allStatus).isNotEmpty();
 		assertThat(allStatus).hasAtLeastOneElementOfType(SprinklerStatus.class);
+        result = mockMvc.perform(get("/api/history")
+                .accept(MediaType.APPLICATION_JSON)
+            ).andDo(print())
+            .andExpect(status().isOk());
+        response = result.andReturn().getResponse();
+        content = response.getContentAsString();
+        assertThat(content).isNotBlank();
+        SprinklerHistory [] history = mapper.readValue(content, SprinklerHistory[].class);
+        assertThat(history).isNotNull();
+        assertThat(history.length).isGreaterThan(0);
 		mockMvc.perform(post("/api/reset"))
 			.andDo(print())
 			.andExpect(status().isOk());

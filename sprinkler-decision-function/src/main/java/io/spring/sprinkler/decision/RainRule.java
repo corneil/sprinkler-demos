@@ -29,22 +29,23 @@ public class RainRule {
 		return (input) -> {
 			logger.info("input:{}", input);
 			if(input != null) {
-				if (input.getState().equals(SprinklerState.OFF)) {
+				if (SprinklerState.ON.equals(input.getState())) {
 					Double minRainMeasure = properties.getMinRainMeasure();
 					logger.info("minRainMeasure={}", minRainMeasure);
 					DateRange dateRange = new DateRange(input.getTimestamp().minus(properties.cycleDuration), input.getTimestamp());
 					Double rainMeasured = simulationService.rainMeasuredFor(dateRange);
 					logger.info("rainMeasured:{} for {}", rainMeasured, dateRange);
-					if (rainMeasured >= minRainMeasure) {
+					if (rainMeasured != null && rainMeasured >= minRainMeasure) {
 						SprinklerEvent result = new SprinklerEvent(input.getId(),
 							input.getTimestamp(),
 							SprinklerState.OFF,
 							input.getReason() + ":OFF:rainMeasured=" + rainMeasured + ":minRainMeasure=" + minRainMeasure);
-						logger.info("result={}", result);
+						logger.info("rain:output={}", result);
 						return result;
 					}
 				}
 			}
+            logger.info("rain:output={}", input);
 			return input;
 		};
 	}

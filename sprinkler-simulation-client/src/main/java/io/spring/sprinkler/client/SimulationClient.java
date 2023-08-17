@@ -10,6 +10,7 @@ import java.util.Optional;
 import io.spring.sprinkler.common.DateRange;
 import io.spring.sprinkler.common.SimulationService;
 import io.spring.sprinkler.common.SprinklerEvent;
+import io.spring.sprinkler.common.SprinklerHistory;
 import io.spring.sprinkler.common.SprinklerStatus;
 import io.spring.sprinkler.common.WeatherData;
 
@@ -112,6 +113,20 @@ public class SimulationClient implements SimulationService {
             .build()
             .toUri();
         ResponseEntity<SprinklerStatus[]> response = template.getForEntity(uri, SprinklerStatus[].class);
+        if (response.getStatusCode().is2xxSuccessful()) {
+            Assert.notNull(response.getBody(), "Expected body");
+            return Arrays.asList(response.getBody());
+        }
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<SprinklerHistory> listHistory() {
+        URI uri = UriComponentsBuilder.fromHttpUrl(serverApiUrl)
+            .pathSegment("history")
+            .build()
+            .toUri();
+        ResponseEntity<SprinklerHistory[]> response = template.getForEntity(uri, SprinklerHistory[].class);
         if (response.getStatusCode().is2xxSuccessful()) {
             Assert.notNull(response.getBody(), "Expected body");
             return Arrays.asList(response.getBody());

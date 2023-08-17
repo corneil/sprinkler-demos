@@ -24,13 +24,18 @@ public class InputOutputConfiguration {
 
     @Bean
     public Function<Message<byte[]>, SprinklerEvent> parse(ObjectMapper mapper) {
-        return event -> {
-            try {
-                logger.info("input:{}", event);
-                return event.getPayload() != null ? mapper.readValue(event.getPayload(), SprinklerEvent.class) : null;
-            } catch (IOException e) {
-                logger.error("Exception parsing:" + e, e);
-                throw new RuntimeException("Exception parsing:" + e, e);
+        return input -> {
+            if (input != null && input.getPayload() != null && input.getPayload().length > 0) {
+                try {
+                    logger.info("input:{}", input);
+                    logger.info("input:payload:{}", new String(input.getPayload()));
+                    return mapper.readValue(input.getPayload(), SprinklerEvent.class);
+                } catch (IOException e) {
+                    logger.error("Exception parsing:" + e, e);
+                    throw new RuntimeException("Exception parsing:" + e, e);
+                }
+            } else {
+                return null;
             }
         };
     }

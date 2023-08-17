@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 })
 class SimulationTimerGenerationTests {
 	@Autowired
-	@Qualifier("timer")
+	@Qualifier("event")
 	protected Supplier<Flux<Message<SprinklerEvent>>> timeSupplierFlux;
 
 	@Test
