@@ -15,7 +15,7 @@ public record SprinklerHistory(
     @Nullable Double weatherPrediction,
     @Nullable Double rain,
     @Nullable LocalTime onTime,
-    @Nullable Duration runTime) implements Comparable<SprinklerHistory> {
+    @Nullable Double runTime) implements Comparable<SprinklerHistory> {
     @Override
     public int compareTo(@NotNull SprinklerHistory o) {
         return date.compareTo(o.date);

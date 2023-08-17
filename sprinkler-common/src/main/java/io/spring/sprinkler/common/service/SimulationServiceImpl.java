@@ -8,7 +8,6 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -143,7 +142,7 @@ public class SimulationServiceImpl implements SimulationService {
         LocalDate currentDate = null;
         Instant onTime = null;
         Instant offTime = null;
-        Duration runTime = null;
+        Double runTime = null;
         Double prediction = null;
         Double rain = null;
         Map<LocalDate, SprinklerHistory> history = new HashMap<>();
@@ -162,7 +161,7 @@ public class SimulationServiceImpl implements SimulationService {
             } else {
                 offTime = status.getStatusTime().toInstant();
                 if (onTime != null) {
-                    runTime = Duration.between(onTime, offTime);
+                    runTime = (double) Duration.between(onTime, offTime).toMillis() / 60000.0;
                 }
             }
             if (prediction == null || rain == null) {
