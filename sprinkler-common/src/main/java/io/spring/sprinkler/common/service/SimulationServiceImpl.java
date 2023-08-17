@@ -142,7 +142,7 @@ public class SimulationServiceImpl implements SimulationService {
         LocalDate currentDate = null;
         Instant onTime = null;
         Instant offTime = null;
-        Double runTime = null;
+        double runTime = 0.0;
         Double prediction = null;
         Double rain = null;
         Map<LocalDate, SprinklerHistory> history = new HashMap<>();
@@ -155,7 +155,7 @@ public class SimulationServiceImpl implements SimulationService {
                 rain = null;
             }
             if (SprinklerState.ON.equals(status.getState())) {
-                runTime = null;
+                runTime = 0.0;
                 onTime = status.getStatusTime().toInstant();
                 offTime = null;
             } else {
@@ -180,7 +180,7 @@ public class SimulationServiceImpl implements SimulationService {
                     p = data.get(0).getPrediction();
                     r = data.stream().map(WeatherDataEntity::getRainMeasured).reduce(Double::sum).orElse(null);
                 }
-                history.put(date, new SprinklerHistory(date, p, r, null, null));
+                history.put(date, new SprinklerHistory(date, p, r, null, 0.0));
             }
         });
         List<SprinklerHistory> result = new ArrayList<>(history.values());
