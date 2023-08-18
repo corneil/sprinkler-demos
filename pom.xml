@@ -17,15 +17,10 @@
     </properties>
     <distributionManagement>
         <repository>
-            <id>repo.spring.io</id>
-            <name>Spring Release Repository</name>
-            <url>https://repo.spring.io/libs-milesone-local</url>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/corneil/sprinkler-demos</url>
         </repository>
-        <snapshotRepository>
-            <id>repo.spring.io</id>
-            <name>Spring Snapshot Repository</name>
-            <url>https://repo.spring.io/libs-snapshot-local</url>
-        </snapshotRepository>
     </distributionManagement>
     <dependencyManagement>
         <dependencies>

@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+    paths-ignore:
+      - '.github/**'
+
+jobs:
+  build:
+    if: github.repository_owner == 'corneil'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-m2-
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'liberica'
+      - name: Setup Scripts
+        shell: bash
+        run: | 
+          chmod a+x ./mvnw
+          chmod a+x ./*.sh
+      - name: Build
+        shell: bash
+        run: ./build.sh
+      - name: Publish Jars
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./mvnw -B deploy
+      - name: Publish Containers
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./push-images.sh
