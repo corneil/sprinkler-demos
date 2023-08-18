@@ -8,27 +8,30 @@ fi
 
 if [ "$1" == "tasks" ]; then
 
-$SCDF/src/deploy/k8s/load-image.sh corneil/sprinkler-report latest true
-# --metadata-uri maven:io.spring.sprinkler:sprinkler-report:jar:metadata:latest
+$SCDF/src/deploy/k8s/load-image.sh ghcr.io/corneil/sprinkler-demos/sprinkler-report latest true
+
 cat > $SCDIR/register-apps.shell <<EOF
-app register --name sprinkler-report --uri docker:corneil/sprinkler-report:latest --type task  --bootVersion 3 --force
+app register --name sprinkler-report --type task  --bootVersion 3 --uri docker:ghcr.io/corneil/sprinkler-demos/sprinkler-report:latest --metadata-uri=maven://https://maven.pkg.github.com/corneil/sprinkler-demos/io.spring.sprinkler:sprinkler-report:jar:metadata:1.0.0-SNAPSHOT --force
 EOF
 
 else
 
-$SCDF/src/deploy/k8s/load-image.sh corneil/sprinkler-data-sink latest true
-$SCDF/src/deploy/k8s/load-image.sh corneil/sprinkler-event-source latest true
-$SCDF/src/deploy/k8s/load-image.sh corneil/sprinkler-decision-processor latest true
+$SCDF/src/deploy/k8s/load-image.sh ghcr.io/corneil/sprinkler-demos/sprinkler-data-sink latest true
+$SCDF/src/deploy/k8s/load-image.sh docker:ghcr.io/corneil/sprinkler-demos/sprinkler-event-source latest true
+$SCDF/src/deploy/k8s/load-image.sh docker:ghcr.io/corneil/sprinkler-demos/sprinkler-decision-processor latest true
 
-# --metadata-uri maven:io.spring.sprinkler:sprinkler-event-source:jar:metadata:latest
-# --metadata-uri maven:io.spring.sprinkler:sprinkler-decision-processor:jar:metadata:latest
-# --metadata-uri maven:io.spring.sprinkler:sprinkler-data-sink:jar:metadata:latest
-# --metadata-uri maven:io.spring.sprinkler:sprinkler-report:jar:metadata:latest
+# source.time=docker:springcloudstream/time-source-rabbit:4.0.0-RC2
+#source.time.metadata=maven://org.springframework.cloud.stream.app:time-source-rabbit:jar:metadata:4.0.0-RC2
+#source.time.bootVersion=3
+#sink.log=docker:springcloudstream/log-sink-rabbit:4.0.0-RC2
+#sink.log.metadata=maven://org.springframework.cloud.stream.app:log-sink-rabbit:jar:metadata:4.0.0-SNAPSHOT
+#sink.log.bootVersion=3
+
 
 cat > $SCDIR/register-apps.shell <<EOF
-app register --name sprinkler-event --uri docker:corneil/sprinkler-event-source:latest --type source --bootVersion 3 --force
-app register --name sprinkler-decision --uri docker:corneil/sprinkler-decision-processor:latest --type processor  --bootVersion 3 --force
-app register --name sprinkler-data --uri docker:corneil/sprinkler-data-sink:latest --type sink  --bootVersion 3 --force
+app register --name sprinkler-event    --type source --bootVersion 3 --uri docker:ghcr.io/corneil/sprinkler-demos/sprinkler-event-source:latest --metadata-uri:maven://https://maven.pkg.github.com/corneil/sprinkler-demos/io.spring.sprinkler:sprinkler-event-source:jar:metadata:1.0.0-SNAPSHOT --force
+app register --name sprinkler-decision --type processor --bootVersion 3 --uri docker:ghcr.io/corneil/sprinkles-demos/sprinkler-decision-processor:latest --metadata-uri=maven://https://maven.pkg.github.com/corneil/sprinkler-demos/io.spring.sprinkler:sprinkler-decision-processor:jar:metadata:1.0.0-SNAPSHOT  --force
+app register --name sprinkler-data     --type sink  --bootVersion 3 --uri docker:ghcr.io/corneil/sprinkler-demos/sprinkler-data-sink:latest --metadata-uri=maven://https://maven.pkg.github.com/corneil/sprinkler-demos/io.spring.sprinkler:sprinkler-data-sink:jar:metadata:1.0.0-SNAPSHOT --force
 EOF
 
 fi
