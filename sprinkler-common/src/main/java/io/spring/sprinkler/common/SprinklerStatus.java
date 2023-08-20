@@ -3,7 +3,7 @@ package io.spring.sprinkler.common;
 import java.time.ZonedDateTime;
 
 
-public record SprinklerStatus(Long id, ZonedDateTime statusTime, SprinklerState state) {
+public record SprinklerStatus(Long id, ZonedDateTime statusTime, SprinklerState state, String reason) {
     public Long getId() {
         return id;
     }
@@ -15,6 +15,7 @@ public record SprinklerStatus(Long id, ZonedDateTime statusTime, SprinklerState 
     public SprinklerState getState() {
         return state;
     }
+    public String getReason() { return reason; }
 
     @Override
     public String toString() {
@@ -22,6 +23,7 @@ public record SprinklerStatus(Long id, ZonedDateTime statusTime, SprinklerState 
             "id=" + id +
             ", statusTime=" + statusTime +
             ", state=" + state +
+            ", reason='" + reason + '\'' +
             '}';
     }
 }

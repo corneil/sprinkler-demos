@@ -35,7 +35,11 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
         </createIndex>
         <createSequence sequenceName="SPRINKLER_STATE_SEQ" startValue="1" minValue="1"/>
     </changeSet>
-
+    <changeSet id="add_status_reason" author="corneil">
+        <addColumn tableName="SPRINKLER_STATE">
+            <column name="REASON" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
 
     <changeSet id="load_weather_data" author="corneil">
         <loadData tableName="WEATHER_DATA" file="weather_data.csv" relativeToChangelogFile="true"/>

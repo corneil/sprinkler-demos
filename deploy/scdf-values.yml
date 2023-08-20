@@ -1,0 +1,101 @@
+scdf:
+  binder:
+    type: kafka
+    kafka:
+      broker:
+        host: kafka-broker.kafka
+      zk:
+        host: kafka-zk.kafka
+  server:
+    service:
+      type: LoadBalancer
+    env:
+      - name: SPRING_CLOUD_DATAFLOW_FEATURES_STREAMS_ENABLED
+        value: "true"
+      - name: SPRING_CLOUD_DATAFLOW_FEATURES_TASKS_ENABLED
+        value: "true"
+      - name: SPRING_CLOUD_DATAFLOW_FEATURES_SCHEDULES_ENABLED
+        value: "true"
+    database:
+      url: jdbc:postgresql://postgresql.postgresql/dataflow
+      driverClassName: org.postgresql.Driver
+      secretName: postgresql
+      secretUsernameKey: database-username
+      secretPasswordKey: database-password
+    metrics:
+      dashboard:
+        url: http://10.103.226.26:3000
+    config:
+      management:
+        metrics:
+          export:
+            prometheus:
+              rsocket:
+                host: prometheus-rsocket-proxy.prometheus
+              pushgateway:
+                base-url: http://prometheus-rsocket-proxy.prometheus:7001
+                enabled: true
+                shutdown-operation: PUSH
+              step: 10s
+      spring:
+        cloud:
+          dataflow:
+            task:
+              management:
+                metrics:
+                  export:
+                    prometheus:
+                      rsocket:
+                        host: prometheus-rsocket-proxy.prometheus
+                      pushgateway:
+                        base-url: http://prometheus-rsocket-proxy.prometheus:7001
+                        enabled: true
+                        shutdown-operation: PUSH
+                      step: 10s
+  skipper:
+    database:
+      url: jdbc:postgresql://postgresql.postgresql/dataflow
+      driverClassName: org.postgresql.Driver
+      secretName: postgresql
+      secretUsernameKey: database-username
+      secretPasswordKey: database-password
+    config:
+      management:
+        metrics:
+          export:
+            prometheus:
+              rsocket:
+                host: prometheus-rsocket-proxy.prometheus
+              pushgateway:
+                base-url: http://prometheus-rsocket-proxy.prometheus:7001
+                enabled: true
+                shutdown-operation: PUSH
+              step: 10s
+      spring:
+        cloud:
+          skipper:
+            server:
+              platform:
+                kubernetes:
+                  accounts:
+                    default:
+                      management:
+                        metrics:
+                          export:
+                            prometheus:
+                              rsocket:
+                                host: prometheus-rsocket-proxy.prometheus
+                              pushgateway:
+                                base-url: http://prometheus-rsocket-proxy.prometheus:7001
+                                enabled: true
+                                shutdown-operation: PUSH
+                              step: 10s
+  registry:
+    secret:
+      ref: "reg-creds-dockerhub"
+  feature:
+    monitoring:
+      grafana:
+        enabled: true
+      prometheusRsocketProxy:
+        enabled: true

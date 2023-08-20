@@ -23,6 +23,9 @@ public class SprinklerStatusEntity {
     @Column("STATE")
     private SprinklerState state;
 
+    @Column("REASON")
+    private String reason;
+
     public SprinklerStatusEntity() {
     }
 
@@ -55,6 +58,14 @@ public class SprinklerStatusEntity {
         this.state = state;
     }
 
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -76,7 +87,7 @@ public class SprinklerStatusEntity {
     }
 
     public SprinklerStatus toInfo() {
-        return new SprinklerStatus(id, statusTime.toInstant().atZone(ZoneOffset.UTC), state);
+        return new SprinklerStatus(id, statusTime.toInstant().atZone(ZoneOffset.UTC), state, reason);
     }
 
     @Override
@@ -85,6 +96,7 @@ public class SprinklerStatusEntity {
             "id=" + id +
             ", statusTime=" + statusTime +
             ", state=" + state +
+            ", reason='" + reason + '\'' +
             '}';
     }
 }

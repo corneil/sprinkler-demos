@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: sprinkler-app
-          image: corneil/sprinkler-simulation-app:latest
+          image: ghcr.io/corneil/sprinkler-demos/sprinkler-simulation-app:latest
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: config
