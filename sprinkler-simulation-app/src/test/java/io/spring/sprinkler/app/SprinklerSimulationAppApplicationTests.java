@@ -16,10 +16,13 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.MariaDBContainer;
+import org.testcontainers.containers.RabbitMQContainer;
 import org.testcontainers.utility.DockerImageName;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ActiveProfiles;
@@ -41,20 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @ActiveProfiles("server")
 class SprinklerSimulationAppApplicationTests {
-	static final MariaDBContainer<?> container = new MariaDBContainer<>(DockerImageName.parse("mariadb:latest"));
 
-	@DynamicPropertySource
-	static void databaseProperties(DynamicPropertyRegistry registry) {
-		registry.add("spring.datasource.url", container::getJdbcUrl);
-		registry.add("spring.datasource.username", container::getUsername);
-		registry.add("spring.datasource.password", container::getPassword);
-		registry.add("spring.datasource.driver-class-name", container::getDriverClassName);
-	}
-
-	@BeforeAll
-	public static void initContainer() {
-		container.start();
-	}
 
 	@Autowired
 	protected SimulationService simulationService;

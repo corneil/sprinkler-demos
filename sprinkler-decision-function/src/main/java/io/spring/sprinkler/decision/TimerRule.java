@@ -33,7 +33,7 @@ public class TimerRule {
                 Optional<SprinklerStatus> status = service.findLatestStatus(now);
                 if (status.isPresent()) {
                     logger.info("timer:status={}", status.get());
-                    if (SprinklerState.OFF.equals(status.get().getState())) {
+                    if (SprinklerState.OFF == status.get().getState()) {
                         // turn on when the event time + cycleTime is before now
                         ZonedDateTime onTime = status.get().getStatusTime().plus(properties.cycleDuration);
                         if (onTime.isBefore(now)) {
@@ -57,7 +57,6 @@ public class TimerRule {
                         }
                     }
                 } else {
-                    state = SprinklerState.OFF;
                     reason = "OFF:No state";
                 }
                 SprinklerEvent output = new SprinklerEvent(input.getId(), now, state, reason);

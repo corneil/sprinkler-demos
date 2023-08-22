@@ -30,7 +30,7 @@ $SCDIR/k8s/load-image.sh ghcr.io/corneil/sprinkler-demos/sprinkler-decision-proc
 
 cat > $SCDIR/register-apps.shell <<EOF
 app register --name sprinkler-event    --type source --bootVersion 3 --uri docker:ghcr.io/corneil/sprinkler-demos/sprinkler-event-source:latest --metadata-uri maven:io.spring.sprinkler:sprinkler-event-source:jar:metadata:1.0.0-SNAPSHOT --force
-app register --name sprinkler-decision --type processor --bootVersion 3 --uri docker:ghcr.io/corneil/sprinkles-demos/sprinkler-decision-processor:latest --metadata-uri maven:io.spring.sprinkler:sprinkler-decision-processor:jar:metadata:1.0.0-SNAPSHOT  --force
+app register --name sprinkler-decision --type processor --bootVersion 3 --uri docker:ghcr.io/corneil/sprinkler-demos/sprinkler-decision-processor:latest --metadata-uri maven:io.spring.sprinkler:sprinkler-decision-processor:jar:metadata:1.0.0-SNAPSHOT  --force
 app register --name sprinkler-data     --type sink  --bootVersion 3 --uri docker:ghcr.io/corneil/sprinkler-demos/sprinkler-data-sink:latest --metadata-uri maven:io.spring.sprinkler:sprinkler-data-sink:jar:metadata:1.0.0-SNAPSHOT --force
 EOF
 

@@ -8,10 +8,10 @@ import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
 @Import(SprinklerServiceConfig.class)
-public class SprinklerSimulationAppApplication {
+public class SprinklerSimulationApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SprinklerSimulationAppApplication.class, args);
+        SpringApplication.run(SprinklerSimulationApplication.class, args);
     }
 
 }

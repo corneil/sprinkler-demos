@@ -80,7 +80,7 @@ public class SimulationServiceImpl implements SimulationService {
             SprinklerState currentState = latest.map(SprinklerStatusEntity::getState).orElse(null);
             if (latest.isEmpty() || !newState.equals(currentState)) {
                 logger.info("updateSprinkler:currentState={}, latest={}", currentState, latest.orElse(null));
-                SprinklerStatusEntity status = statusRepository.save(new SprinklerStatusEntity(Timestamp.from(eventTimestamp), newState));
+                SprinklerStatusEntity status = statusRepository.save(new SprinklerStatusEntity(Timestamp.from(eventTimestamp), newState, event.getReason()));
                 logger.info("updateSprinkler:status={}", status);
             } else {
                 logger.info("updateSprinkler:skipped:latest={}", latest.orElse(null));
@@ -138,28 +138,28 @@ public class SimulationServiceImpl implements SimulationService {
     public List<SprinklerHistory> listHistory() {
         Map<LocalDate, List<WeatherDataEntity>> weatherData = weatherDataRepository.findAll()
             .stream()
-            .collect(Collectors.groupingBy((weatherDataEntity) -> weatherDataEntity.getTimestamp().toLocalDateTime().toLocalDate()));
+            .collect(Collectors.groupingBy((weatherDataEntity) -> weatherDataEntity.getTimestamp().toInstant().atZone(ZoneOffset.UTC).toLocalDateTime().toLocalDate()));
         LocalDate currentDate = null;
-        Instant onTime = null;
-        Instant offTime = null;
+        ZonedDateTime onTime = null;
+        ZonedDateTime offTime = null;
         double runTime = 0.0;
         Double prediction = null;
         Double rain = null;
         Map<LocalDate, SprinklerHistory> history = new HashMap<>();
         for (SprinklerStatusEntity status : statusRepository.findAll()) {
-            LocalDate date = status.getStatusTime().toLocalDateTime().toLocalDate();
+            LocalDate date = status.getStatusTime().toInstant().atZone(ZoneOffset.UTC).toLocalDateTime().toLocalDate();
             if (!date.equals(currentDate)) {
-                history.put(date, new SprinklerHistory(date, prediction, rain, onTime != null ? onTime.atZone(ZoneOffset.UTC).toLocalTime() : null, runTime));
+                history.put(date, new SprinklerHistory(date, prediction, rain, onTime != null ? onTime.toLocalTime() : null, runTime));
                 currentDate = date;
                 prediction = null;
                 rain = null;
             }
             if (SprinklerState.ON.equals(status.getState())) {
                 runTime = 0.0;
-                onTime = status.getStatusTime().toInstant();
+                onTime = status.getStatusTime().toInstant().atZone(ZoneOffset.UTC);
                 offTime = null;
             } else {
-                offTime = status.getStatusTime().toInstant();
+                offTime = status.getStatusTime().toInstant().atZone(ZoneOffset.UTC);
                 if (onTime != null) {
                     runTime = (double) Duration.between(onTime, offTime).toMillis() / 60000.0;
                 }

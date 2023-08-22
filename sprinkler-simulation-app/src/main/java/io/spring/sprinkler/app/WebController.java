@@ -27,9 +27,9 @@ public class WebController {
     public String index(Model model) {
         List<SprinklerHistory> history = simulationService.listHistory();
         model.addAttribute("dates", history.stream().map(SprinklerHistory::date).map(LocalDate::toString).toList());
-        model.addAttribute("rainFall", history.stream().map(SprinklerHistory::rain).toList());
-        model.addAttribute("predictions", history.stream().map(SprinklerHistory::weatherPrediction).toList());
-        model.addAttribute("runTime", history.stream().map(SprinklerHistory::runTime).toList());
+        model.addAttribute("rainFall", history.stream().map(SprinklerHistory::rain).map(r -> r == null ? 0.0 : r).toList());
+        model.addAttribute("predictions", history.stream().map(SprinklerHistory::weatherPrediction).map(p -> p == null ? 0.0 : p).toList());
+        model.addAttribute("runTime", history.stream().map(SprinklerHistory::runTime).map(r -> r == null ? 0.0 : r).toList());
         model.addAttribute("history", history);
         model.addAttribute("weatherData", simulationService.listAllWeather());
         model.addAttribute("status", simulationService.listAllStatus());

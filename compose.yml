@@ -1,0 +1,70 @@
+services:
+  mariadb:
+    image: 'mariadb:10.6'
+    environment:
+      - 'MARIADB_DATABASE=dataflow'
+      - 'MARIADB_PASSWORD=spring'
+      - 'MARIADB_ROOT_PASSWORD=yourpassword'
+      - 'MARIADB_USER=spring'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+  rabbitmq:
+    image: 'rabbitmq:3.8-management'
+    environment:
+      - 'RABBITMQ_DEFAULT_PASS=secret'
+      - 'RABBITMQ_DEFAULT_USER=myuser'
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    expose:
+      - '5672'
+      - '15672'
+  skipper-server:
+    image: 'springcloud/spring-cloud-skipper-server:2.11.0-RC1'
+    environment:
+      SERVER_PORT: '7577'
+      SPRING_DATASOURCE_URL: 'jdbc:mariadb://mariadb:3306/dataflow'
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: 'org.mariadb.jdbc.Driver'
+      SPRING_JPA_DATABASE_PLATFORM: 'org.hibernate.dialect.MariaDB106Dialect'
+      SPRING_DATASOURCE_TEST_ON_BORROW: 'true'
+      SPRING_DATASOURCE_VALIDATION_QUERY: "SELECT 1"
+      SPRING_DATASOURCE_HIKARI_DATA_SOURCE_PROPERTIES_USE_UNICODE: 'true'
+      SPRING_DATASOURCE_HIKARI_DATA_SOURCE_PROPERTIES_CHARACTER_ENCODING: 'UTF-8'
+      SPRING_DATASOURCE_USERNAME: 'root'
+      SPRING_DATASOURCE_PASSWORD: 'yourpassword'
+      SPRING_CLOUD_SKIPPER_SERVER_PLATFORM_LOCAL_ACCOUNTS_DEFAULT_PORTRANGE_LOW: 20000
+      SPRING_CLOUD_SKIPPER_SERVER_PLATFORM_LOCAL_ACCOUNTS_DEFAULT_PORTRANGE_HIGH: 20190
+    ports:
+      - '7577:7577'
+    expose:
+      - '7577'
+    depends_on:
+      - mariadb
+      - rabbitmq
+  scdf-server:
+    image: 'springcloud/spring-cloud-dataflow-server:2.11.0-RC1'
+    environment:
+      SPRING_DATASOURCE_URL: 'jdbc:mariadb://mariadb:3306/dataflow'
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: 'org.mariadb.jdbc.Driver'
+      SPRING_JPA_DATABASE_PLATFORM: 'org.hibernate.dialect.MariaDB106Dialect'
+      SPRING_DATASOURCE_TEST_ON_BORROW: 'true'
+      SPRING_DATASOURCE_VALIDATION_QUERY: "SELECT 1"
+      SPRING_DATASOURCE_HIKARI_DATA_SOURCE_PROPERTIES_USE_UNICODE: 'true'
+      SPRING_DATASOURCE_HIKARI_DATA_SOURCE_PROPERTIES_CHARACTER_ENCODING: 'UTF-8'
+      SPRING_DATASOURCE_USERNAME: 'root'
+      SPRING_DATASOURCE_PASSWORD: 'yourpassword'
+      SPRING_CLOUD_DATAFLOW_APPLICATIONPROPERTIES_TASK_SPRING_CLOUD_TASK_CLOSECONTEXTENABLED: true
+      SPRING_CLOUD_SKIPPER_CLIENT_SERVER_URI: '${SKIPPER_URI:-http://skipper-server:7577}/api'
+      SPRING_CLOUD_DATAFLOW_CONTAINER_REGISTRY_CONFIGURATIONS_DEFAULT_USER: '${METADATA_DEFAULT_DOCKERHUB_USER}'
+      SPRING_CLOUD_DATAFLOW_CONTAINER_REGISTRY_CONFIGURATIONS_DEFAULT_SECRET: '${METADATA_DEFAULT_DOCKERHUB_PASSWORD}'
+      SPRING_CLOUD_DATAFLOW_CONTAINER_REGISTRYCONFIGURATIONS_DEFAULT_USER: '${METADATA_DEFAULT_DOCKERHUB_USER}'
+      SPRING_CLOUD_DATAFLOW_CONTAINER_REGISTRYCONFIGURATIONS_DEFAULT_SECRET: '${METADATA_DEFAULT_DOCKERHUB_PASSWORD}'
+    ports:
+      - '9393:9393'
+    expose:
+      - '9393'
+    depends_on:
+      - mariadb
+      - skipper-server

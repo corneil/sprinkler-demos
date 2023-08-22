@@ -29,9 +29,10 @@ public class SprinklerStatusEntity {
     public SprinklerStatusEntity() {
     }
 
-    public SprinklerStatusEntity(Timestamp statusTime, SprinklerState state) {
+    public SprinklerStatusEntity(Timestamp statusTime, SprinklerState state, String reason) {
         this.statusTime = statusTime;
         this.state = state;
+        this.reason = reason;
     }
 
     public Long getId() {
